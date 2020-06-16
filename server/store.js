@@ -9,6 +9,19 @@ const init = async () => (
     })
   })
 )
+const deleteTask = async ({ id }) => (
+  new Promise((resolve, reject) => {
+    const gen = storage.TableUtilities.entityGenerator
+    const task = {
+      PartitionKey: gen.String('task'),
+      RowKey: gen.String(id)
+    }
+
+    service.deleteEntity(table, task, (error) => {
+      !error ? resolve() : reject()
+    })
+  })
+)
 const addTask = async ({ title }) => (
   new Promise((resolve, reject) => {
     const gen = storage.TableUtilities.entityGenerator
@@ -26,11 +39,12 @@ const addTask = async ({ title }) => (
 const listTasks = async () => (
   new Promise((resolve, reject) => {
     const query = new storage.TableQuery()
-      .select(['title'])
+      .select(['RowKey', 'title'])
       .where('PartitionKey eq ?', 'task')
 
     service.queryEntities(table, query, null, (error, result) => {
       !error ? resolve(result.entries.map((entry) => ({
+        id: entry.RowKey._,
         title: entry.title._
       }))) : reject()
     })
@@ -39,5 +53,6 @@ const listTasks = async () => (
 module.exports = {
   init,
   addTask,
-  listTasks
+  listTasks,
+  deleteTask
 }
