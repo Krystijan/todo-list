@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"start": "node server/index.js"
+    "start": "node server/index.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Krystijan/todo-list#readme",
   "dependencies": {
     "@koa/router": "^9.0.1",
+    "azure-storage": "^2.10.3",
     "koa": "^2.12.1",
     "koa-static": "^5.0.0"
   }
